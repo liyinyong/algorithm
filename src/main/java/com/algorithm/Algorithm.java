@@ -11,6 +11,9 @@ public class Algorithm {
         int[] array = {5, 3, 7, 4, 8, 2, 9, 6, 1};
         //Algorithm.selectSort(array);
         //Algorithm.insertSort(array);
+        //Algorithm.shellSort(array);
+        //Algorithm.bubbleSort(array);
+
         Algorithm.quickSort(array);
         System.out.println(Algorithm.binarySearch(array, 7, 0, array.length - 1));
     }
@@ -37,6 +40,9 @@ public class Algorithm {
      * 插入排序
      * 思路：如同玩扑克牌一样，每次摸牌都将它与手中的牌比较，始终将牌放在比它大的牌前面，
      * 比它小的牌后面。这样当牌全部摸到手上后，就是一个有序的序列
+     * int[] array = {5, 3, 7, 4, 8, 2, 9, 6, 1};
+     * 357482961
+     * 357482961
      */
     public static void insertSort(int[] array) {
         for (int i = 1; i < array.length; i++) {
@@ -45,9 +51,9 @@ public class Algorithm {
             for (j = i - 1; j >= 0; j--) {
                 if (array[j] > temp) {
                     array[j + 1] = array[j];
+                    array[j] = temp;
                 }
             }
-            array[j + 1] = temp;
         }
         System.out.println(Arrays.toString(array) + "insertSort");
     }
@@ -66,14 +72,30 @@ public class Algorithm {
         for (int r = array.length / 2; r >= 1; r = r / 2) {
             for (int i = r; i < array.length; i++) {
                 temp = array[i];
-                int j;
-                for (j = i - r; j >= 0 && temp < array[j]; j = j - r) {
-                    array[j + r] = array[j];
+                for (int j = i - r; j >= 0; j = j - r) {
+                    if (temp < array[j]) {
+                        array[j + r] = array[j];
+                        array[j] = temp;
+                    }
                 }
-                array[j + r] = temp;
             }
         }
         System.out.println(Arrays.toString(array) + "shellSort");
+    }
+
+    private void sort(int[] array) {
+        int temp;
+        for (int r = array.length / 2; r >= 1; r = r / 2) {
+            for (int i = r; i < array.length; i++) {
+                temp = array[i];
+                for (int j = i - r; j >= 0; j = j - r) {
+                    if (array[j] > temp) {
+                        array[j + r] = array[j];
+                        array[j] = temp;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -81,6 +103,7 @@ public class Algorithm {
      * 思路：在要排序的一组数中，对当前还未排好序的范围内的全部数，自上而下对相邻的两个数依次进行比较和调整，让较大的数往下沉，较小的往上冒。
      * 即：每当两相邻的数比较后发现它们的排序与排序要求相反时，就将它们互换。
      * * int[] array = {5, 3, 7, 4, 8, 2, 9, 6, 1};
+     * 537482619
      */
     public static void bubbleSort(int[] array) {
         int temp = 0;
@@ -108,7 +131,7 @@ public class Algorithm {
     public static void quickSort(int[] array, int low, int high) {
         if (low < high) {
             int middle = getMiddle(array, low, high);
-            quickSort(array, low, middle - 1);
+            quickSort(array, low, middle);
             quickSort(array, middle + 1, high);
         }
     }
@@ -128,6 +151,7 @@ public class Algorithm {
         array[low] = temp;
         return low;
     }
+
 
     /**
      * 二分查找的基本思路是：首先确定该查找区间的中间点位置： int mid = (low+upper) / 2；
